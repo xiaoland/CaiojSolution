@@ -1,0 +1,35 @@
+# Project: ÏîÄ¿1
+# Makefile created by Dev-C++ 5.9.2
+
+# This Makefile is written for syntax check!
+# Regenerate it if you want to use this Makefile to build.
+
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+RES      = caioj_private.res
+OBJ      = debug_file.o $(RES)
+LINKOBJ  = debug_file.o $(RES)
+LIBS     = -L"E:/Program/Dev-Cpp/MinGW64/lib" -L"E:/Program/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -mwindows
+INCS     = -I"E:/Program/Dev-Cpp/MinGW64/include" -I"E:/Program/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"E:/Program/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include"
+CXXINCS  = -I"E:/Program/Dev-Cpp/MinGW64/include" -I"E:/Program/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"E:/Program/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"E:/Program/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include/c++"
+BIN      = caioj.exe
+CXXFLAGS = $(CXXINCS) -fsyntax-only
+CFLAGS   = $(INCS) -fsyntax-only
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom $(OBJ) $(BIN)
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+
+debug_file.o: debug_file.cpp
+	$(CPP) -c debug_file.cpp $(CXXFLAGS)
+
+caioj_private.res:
+	$(WINDRES) -i caioj_private.rc --input-format=rc -o nul -O coff 
+
