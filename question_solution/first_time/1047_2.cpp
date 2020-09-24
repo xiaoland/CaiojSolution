@@ -1,33 +1,30 @@
 #include <cstdio>
 #include <cstring>
 struct node {
-    int a[9];
-    int step = 0, record = 0, last = 0;
-}; 
-node list[410000];
-bool find = false;
-int head, tail, edk;
-bool hash[410000];
-int opreation_record[410000];
- 
+    int a[9], step, record, last;
+};
+node list[410000], now;
+int head, tail;
+bool v[410000], find;
+
 int get_factorial(int x) {
-    int result =  1;
+    int result = 1;
     for(int i = 1; i<=x; i++) {
-        result = result*i;
+        result*=i;
     }
     return result;
 }
- 
+
 int carton(node p) {
-    int a[9], len= 0, ans = 0, nac = 0;
+    int a[9], len = 0, nac = 0, ans = 0;
     bool appear[9];
     memset(appear, false, sizeof(appear));
-     
-    for(int i = 1; i<= 8; i++) {
+
+    for(int i = 1; i<=8; i++) {
         len++;
         a[len] = p.a[i];
     }
-     
+
     for(int i = 1; i<=len; i++) {
         nac = 0;
         for(int j = 1; j<a[i]; j++) {
@@ -38,26 +35,9 @@ int carton(node p) {
         appear[a[i]] = true;
         ans = ans + nac*get_factorial(len-i);
     }
-    return ans+1;
 }
 
-bool compare(node p) {
-    for(int i = 1; i<= 8; i++) {
-        if(p.a[i] != list[0].a[i]) {
-            return false;
-        }
-    }
-    return true;
-}
-
-void display(node p) {
-    for(int i = 1; i<8; i++) {
-        printf("%d ", p.a[i]);
-    }
-    printf("%d\n", p.a[8]);
-}
-
-node opreation(int mode, node p) {
+node opreation(node p, int mode) {
     node p2 = p;
     if(mode == 1) {
         p.a[1] = p2.a[8];
@@ -81,56 +61,55 @@ node opreation(int mode, node p) {
         p.a[7] = p2.a[6];
         p.a[2] = p2.a[7];
     }
-    printf("opreation: %d: ", mode); // FOR DEBUG
-    display(p);  // FOR DEBUG
     return p;
 }
- 
+
 int main() {
     for(int i = 1; i<=8; i++) {
-        scanf("%d", &list[0].a[i]); // 段错误原因之一：少了&
+        scanf("%d", &list[0].a[i]);
         list[1].a[i] = i;
     }
+
     list[1].step = 1;
-    edk = carton(list[0]);
     head = tail = 1;
-    memset(hash, false, sizeof(hash));
-     
+    int edk = carton(list[0]);
+    find = false;
+    memset(v, false, sizeof(v));
+    
     while(head<=tail) {
         for(int i = 1; i<=3; i++) {
-            node now = list[head];
-            now = opreation(i, now);
+            now = list[head];
+            now = opreation(now, i);
             now.step++;
             now.last = head;
             now.record = i;
 
             int k = carton(now);
-            if(hash[k] == false) {
-                hash[k] = true;
-                // tail++;  // 后缀是调用了再加，前缀是先加了再调用
+            if(v[k] == false) {
+                v[k] = true;
                 list[++tail] = now;
-                printf("now step: %d\n", now.step);
-                if(compare(now)) {
+                if(k == edk) {
                     find = true;
                     break;
                 }
-            } 
+            }
         }
         if(find) {
             break;
         }
         head++;
     }
+
     printf("%d\n", list[tail].step);
 
-    int x = tail, len = 0;
+    int opreation_record[410000], x = tail, len = 0;
     while(x>1) {
         opreation_record[++len] = list[x].record;
         x = list[x].last;
     }
     char b[5] = "XABC";
-    for(int i = len; i>=1; i--) {
+    for(int i = len; i>=1; i++) {
         printf("%c", b[opreation_record[i]]);
     }
-    return 0;
+
 }
