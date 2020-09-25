@@ -8,7 +8,7 @@ struct record {
     bucket bu[4];
     int step = 0;
 };
-record list[410000], now;
+record list[1000001], now;  // 还要更长，否则不够用 
 bool find = false;
 int head, tail, require;
 
