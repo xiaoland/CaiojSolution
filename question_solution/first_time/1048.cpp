@@ -38,6 +38,7 @@ void bfs() {
     while(head<=tail) {
         if(find == false) {
             for(int from = 1; from<=3; from++) {
+                printf("BFS: CONTINUE from: %d, head: %d, tail: %d\n", from, head, tail);
                 now = list[head];
                 if(now.bu[from].is_empty == false) {
 
@@ -63,10 +64,12 @@ void bfs() {
                             }
 
                             if(is_repeat(now) == false) {
+                                printf("BFS: SAVING...\n");
                                 now.bu[to].loss_s = now.bu[to].full - now.bu[to].now_volumn;
                                 now.bu[from].loss_s = now.bu[from].full - now.bu[from].now_volumn;
                                 now.step = list[head].step + 1; // 必须这么做，因为中间有双重for循环，只有在第一个那里才会更新now
                                 list[++tail] = now;
+                                printf("BFS: SAVED\n");
                                 if(is_end(now)) {
                                     find = true;
                                     break;
@@ -76,6 +79,7 @@ void bfs() {
                     }
                 }
             }
+            head++;
         }
     }
 }
