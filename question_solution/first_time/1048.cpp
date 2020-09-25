@@ -95,7 +95,7 @@ int main() {
         }
         list[1].bu[i].loss_s = list[1].bu[i].full - list[1].bu[i].now_volumn;
     }
-    scanf("%d", require);
+    scanf("%d", &require);
 
     list[1].step = 0;
     bfs();
