@@ -28,7 +28,7 @@ gene opreation(gene p, int mode) {
         p.a[1] = p2.a[2];
         p.a[2] = p2.a[1];
     }
-    else if(mode == 2) {  // ERROR!  1422->4221
+    else if(mode == 2) {  // 1422->4221
         for(int i = 1; i<=len; i++) {
             int j = i + 1;
             if(j > len) {  // 是 > 大于啊，不是小于
