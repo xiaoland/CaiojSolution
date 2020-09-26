@@ -14,7 +14,7 @@ int head, tail, require;
 
 bool is_repeat(record p) {
     bool result = true;
-    for(int i = 1; i<=tail; i++) {
+    for(int i = tail; i>=1; i--) {
         for(int j = 1; j<=3; j++) {
             if(p.bu[j].now_volumn != list[i].bu[j].now_volumn) {
                 result = false;
@@ -26,7 +26,7 @@ bool is_repeat(record p) {
 
 bool is_end(record p) {
     for(int i = 1; i<=3; i++) {
-        printf("IS END: CHECKING i: %d, now_volumn: %d, is_empty: %d, is_full: %d\n", i, p.bu[i].now_volumn, p.bu[i].is_empty, p.bu[i].is_full);
+        // printf("IS END: CHECKING i: %d, now_volumn: %d, is_empty: %d, is_full: %d\n", i, p.bu[i].now_volumn, p.bu[i].is_empty, p.bu[i].is_full);
         if(p.bu[i].now_volumn == require) {
             return true;
         }
@@ -36,92 +36,103 @@ bool is_end(record p) {
 
 void bfs() {
     head = tail = 1;
-    bool bs = false;
     while(head<=tail) {
-        if(find == false) {
             for(int from = 1; from<=3; from++) {
-                printf("BFS: CONTINUE from: %d, head: %d, tail: %d\n", from, head, tail);
                 if(list[head].bu[from].is_empty == false) {
                     
-                    if(bs && from == 1) {
-                        // bs = false;
-                        continue;
-                    }
-                    if(from == 1) {
-                        bs = true;
-                    }
-                    int to = from + 1;
-                    if(to > 3) {
-                        to = 1;
-                    }
-                    if(now.bu[to].is_full == false && from != to) {
+                    for(int to = 1; to<=3; to++) {
+                        // printf("BFS: CONTINUE from: %d, to: %d, head: %d, tail: %d\n", from, to, head, tail);
+                        if(from != to) {
                             
-                        now = list[head];
-                        int loss_s = now.bu[to].loss_s;  // 要被倒入的桶还有多少才满
-                        if(now.bu[from].now_volumn >= loss_s) {  // 是否够倒
-                            now.bu[to].now_volumn+=loss_s;
-                            now.bu[from].now_volumn-=loss_s;
-                            now.bu[to].is_full = true;
-                            now.bu[to].is_empty = false;
-                            now.bu[from].is_full = false;
-                            if(now.bu[from].now_volumn == 0) {
-                                now.bu[from].is_empty = true;
-                                now.bu[from].is_full = false;
+                            now = list[head];
+                            // volumn update
+                            int loss_s = now.bu[to].loss_s;  // 要被倒入的桶还有多少才满
+                            if(now.bu[from].now_volumn >= loss_s) {  // 是否够倒
+                                now.bu[to].now_volumn+=loss_s;
+                                now.bu[from].now_volumn-=loss_s;
                             }
-                        }
-                        else {
-                            now.bu[to].now_volumn+=now.bu[from].now_volumn;
-                            now.bu[from].now_volumn = 0;
-                            now.bu[from].is_empty = true;
-                            now.bu[from].is_full = false;
-                        }
+                            else {
+                                now.bu[to].now_volumn+=now.bu[from].now_volumn;
+                                now.bu[from].now_volumn = 0;
+                            }
 
-                        if(is_repeat(now) == false) {
-                            printf("BFS: SAVING...\n");
-                            now.bu[to].loss_s = now.bu[to].full - now.bu[to].now_volumn;
-                            now.bu[from].loss_s = now.bu[from].full - now.bu[from].now_volumn;
-                            now.step = list[head].step + 1; // 必须这么做，因为中间有双重for循环，只有在第一个那里才会更新now
-                            list[++tail] = now;
-                            printf("BFS: SAVED\n");
-                            if(is_end(now)) {
-                                find = true;
-                                break;
+                            // bucket from's status updating
+                            if(now.bu[from].now_volumn == 0) {
+                                now.bu[from].is_full = false;
+                                now.bu[from].is_empty = true;
+                            }
+                            else if(now.bu[from].now_volumn < now.bu[from].full) {
+                                now.bu[from].is_full = false;
+                                now.bu[from].is_empty = false;
+                            }
+                            else {
+                                now.bu[from].is_full = true;
+                                now.bu[from].is_empty = false;
+                            }
+                            // bucket to's status updating
+                            if(now.bu[to].now_volumn == 0) {
+                                now.bu[to].is_full = false;
+                                now.bu[to].is_empty = true;
+                            }
+                            else if(now.bu[to].now_volumn < now.bu[to].full) {
+                                now.bu[to].is_full = false;
+                                now.bu[to].is_empty = false;
+                            }
+                            else {
+                                now.bu[to].is_full = true;
+                                now.bu[to].is_empty = false;
+                            }
+
+                            if(is_repeat(now) == false) {
+                                // printf("BFS: SAVING...\n");
+                                now.bu[to].loss_s = now.bu[to].full - now.bu[to].now_volumn;
+                                now.bu[from].loss_s = now.bu[from].full - now.bu[from].now_volumn;
+                                now.step = list[head].step + 1; // 必须这么做，因为中间有双重for循环，只有在第一个那里才会更新now
+                                list[++tail] = now;
+                                // printf("BFS: SAVED\n");
+                                if(is_end(now)) {
+                                    find = true;
+                                    return ;
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        head++;
+            head++;
     }
 }
 
 int main() {
 
-    for(int i = 1; i<=3; i++) {
-        scanf("%d", &list[1].bu[i].full);
-        if(i == 1) {
-            list[1].bu[i].is_empty = false;
-            list[1].bu[i].is_full = true;
-            list[1].bu[i].now_volumn = list[1].bu[i].full;
+    while(true) {
+        for(int i = 1; i<=3; i++) {
+            if(scanf("%d", &list[1].bu[i].full) == EOF) {
+                break;
+            }
+            if(i == 1) {
+                list[1].bu[i].is_empty = false;
+                list[1].bu[i].is_full = true;
+                list[1].bu[i].now_volumn = list[1].bu[i].full;
+            }
+            else {
+                list[1].bu[i].is_empty = true;
+                list[1].bu[i].is_full = false;
+                list[1].bu[i].now_volumn = 0;
+            }
+            list[1].bu[i].loss_s = list[1].bu[i].full - list[1].bu[i].now_volumn;
+        }
+        scanf("%d", &require);
+
+        list[1].step = 0;
+        bfs();
+    
+        if(find) {
+            printf("yes\n");
+            printf("%d", list[tail].step);
         }
         else {
-            list[1].bu[i].is_empty = true;
-            list[1].bu[i].is_full = false;
-            list[1].bu[i].now_volumn = 0;
+            printf("no");
         }
-        list[1].bu[i].loss_s = list[1].bu[i].full - list[1].bu[i].now_volumn;
-    }
-    scanf("%d", &require);
-
-    list[1].step = 0;
-    bfs();
-    
-    if(find) {
-        printf("yes\n");
-        printf("%d", list[tail].step);
-    }
-    else {
-        printf("no");
     }
 }
