@@ -11,23 +11,27 @@ struct record {
     int step = 0;
 };
 record list[1000001], now;  // 还要更长，否则不够用 
-bool find = false, v[111000];
+bool find = false, v[1110000];  // v是一百一十一万！
 int head, tail, require;
 
-int hash(record p) {  // 全新加密方式！
-    return p.bu[1].now_volumn*1000 + p.bu[2].now_volumn*100 + p.bu[3].now_volumn;
+int hash(record p) {  // 全新加密方式！ 10000与100 -----也可以
+    return p.bu[1].now_volumn*10000 + p.bu[2].now_volumn*100 + p.bu[3].now_volumn;
 }
 
-bool is_repeat(record p) {
-    bool result = true;
+bool is_repeat(record p) {  // 降低时间复杂度，少用for循环
+    // bool result = true;
     for(int i = tail; i>=1; i--) {
-        for(int j = 1; j<=3; j++) {
-            if(p.bu[j].now_volumn != list[i].bu[j].now_volumn) {
-                result = false;
-            }
+        // for(int j = 1; j<=3; j++) {
+        //     if(p.bu[j].now_volumn != list[i].bu[j].now_volumn) {
+        //         result = false;
+        //     }
+        // }
+        if(p.bu[1].now_volumn == list[i].bu[1].now_volumn && p.bu[2].now_volumn == list[i].bu[2].now_volumn && p.bu[3].now_volumn == list[i].bu[3].now_volumn) {
+            return true;
         }
     }
-    return result;
+    return false;
+    // return result;
 }
 
 bool is_end(record p) {
@@ -42,7 +46,8 @@ bool is_end(record p) {
 
 void bfs() {
     head = tail = 1;
-    memset(v, false, sizeof(v));
+    find = false; // 要重新设置啊
+    // memset(v, false, sizeof(v));
     while(head<=tail) {
             for(int from = 1; from<=3; from++) {
                 if(list[head].bu[from].is_empty == false) {
@@ -90,10 +95,10 @@ void bfs() {
                                 now.bu[to].is_empty = false;
                             }
 
-                            int k = hash(now);
-                            if(v[k] == false) {
+                            // int k = hash(now);
+                            if(is_repeat(now) == false) {
                                 // printf("BFS: SAVING...\n");
-                                v[k] = true;
+                                // v[k] = true;
                                 now.bu[to].loss_s = now.bu[to].full - now.bu[to].now_volumn;
                                 now.bu[from].loss_s = now.bu[from].full - now.bu[from].now_volumn;
                                 now.step = list[head].step + 1; // 必须这么做，因为中间有双重for循环，只有在第一个那里才会更新now
@@ -137,8 +142,14 @@ int main() {
 
         scanf("%d", &require);
 
-        list[1].step = 0;
-        bfs();
+        head = tail = 1;
+        if(is_end(list[1])) {  // 如果本身就是，那也就不用搜了！一定要的，别再忘了！
+            find = true;
+        }
+        else {
+            list[1].step = 0;
+            bfs();
+        }
     
         if(find) {
             printf("yes\n");
