@@ -1,5 +1,6 @@
 // author: Lan_zhijiang
 // description: 高精度加法
+// 仍需进一步动态观察其变化以理解
 #include <cstdio>
 #include <cstring>
 #include <algorithm>
