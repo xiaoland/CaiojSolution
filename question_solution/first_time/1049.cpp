@@ -56,10 +56,18 @@ void read_in() {
         t--;
         scanf("%d%d%d%d", &sx, &sy, &ex, &ey);
 
+        bfs();
+        if(reach) {
+            printf("%d\n", list[tail].step);
+        }
+        else {
+            printf("Impossible\n");
+        }
     }
 
 }
 
 int main() {
-    
+    read_in();
+    return 0;
 }
