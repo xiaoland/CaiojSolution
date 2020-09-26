@@ -2,34 +2,42 @@
 // description: 基因重组
 #include <cstdio>
 #include <cstring>
+using namespace std;
 struct gene {
     int a[13];
     int step;
 };
-gene list[410000], now;
-bool v[110000], end = false;
+gene list[2100000], now;  // 变态长模式（计算空间复杂度）
+bool v[21000000], end = false;
 int head, tail, len, edk;
 
 int hash(gene now) {
     int ans = 0;
     for(int i = 1; i<=len; i++) {
+        ans*=4;
         ans+=now.a[i]-1;
+        // printf("HASH: i: %d, a: %d, ans: %d\n", i, now.a[i], ans);
     }
     return ans;
 }
 
 gene opreation(gene p, int mode) {
     gene p2 = p;
-    
+    // printf("OPREATION: mode: %d\n", mode);
     if(mode == 1) {
         p.a[1] = p2.a[2];
         p.a[2] = p2.a[1];
     }
-    else if(mode == 2) {
+    else if(mode == 2) {  // ERROR!  1422->4221
         for(int i = 1; i<=len; i++) {
-            
+            int j = i + 1;
+            if(j > len) {  // 是 > 大于啊，不是小于
+                j = 1;
+            }
+            p.a[i] = p2.a[j];
         }
     }
+    return p;
 }
 
 void bfs() {
@@ -65,27 +73,40 @@ void read_in() {
         if(len == 0) {
             break;
         }
-        char st[2][14];
-        scanf("%s", &st[0]);
-        scanf("%s", &st[1]);
-        for(int j = 0; j<=1; j++) {
+        char st[14];
+        for(int j = 1; j>=0; j--) {
+            scanf("%s", &st[1]);
             for(int i = 1; i<=len; i++) {
-                if(st[j][i] == 'A') {  // C++中的 "" 和 '' 是有区别的
-                    list[i].a[i] = 1;
+                if(st[i] == 'A') {  // C++中的 "" 和 '' 是有区别的
+                    list[j].a[i] = 1;
                 }
-                else if(st[j][i] == 'C') {
-                    list[i].a[i] = 2;
+                else if(st[i] == 'C') {
+                    list[j].a[i] = 2;
                 }
-                else if(st[j][i] == 'G') {
-                    list[i].a[i] = 3;
+                else if(st[i] == 'G') {
+                    list[j].a[i] = 3;
                 }
-                else if(st[j][i] == 'T')
-                    list[i].a[i] = 4;
+                else if(st[i] == 'T') {
+                    list[j].a[i] = 4;
                 }
             }
         }
-
+        list[1].step = 0;
         edk = hash(list[0]);
-        bfs();
+        if(hash(list[1]) == edk) {  // 又忘了这种可能性么...
+            end = true;
+        }
+        else {
+            bfs();
+        }
+
+        if(end) {
+            printf("%d\n", list[tail].step);
+        }
     }
+}
+
+int main() {
+    read_in();
+    return 0;
 }
