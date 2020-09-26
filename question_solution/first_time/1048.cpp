@@ -1,3 +1,5 @@
+// author: Lan_zhijiang
+// description: 宽搜实现巧取妙量
 #include <cstdio>
 #include <cstring>
 struct bucket {
@@ -9,8 +11,12 @@ struct record {
     int step = 0;
 };
 record list[1000001], now;  // 还要更长，否则不够用 
-bool find = false;
+bool find = false, v[111000];
 int head, tail, require;
+
+int hash(record p) {
+    return p.bu[1].now_volumn*1000 + p.bu[2].now_volumn*100 + p.bu[3].now_volumn;
+}
 
 bool is_repeat(record p) {
     bool result = true;
@@ -36,6 +42,7 @@ bool is_end(record p) {
 
 void bfs() {
     head = tail = 1;
+    memset(v, false, sizeof(v));
     while(head<=tail) {
             for(int from = 1; from<=3; from++) {
                 if(list[head].bu[from].is_empty == false) {
@@ -83,8 +90,10 @@ void bfs() {
                                 now.bu[to].is_empty = false;
                             }
 
-                            if(is_repeat(now) == false) {
+                            int k = hash(now);
+                            if(v[k] == false) {
                                 // printf("BFS: SAVING...\n");
+                                v[k] = true;
                                 now.bu[to].loss_s = now.bu[to].full - now.bu[to].now_volumn;
                                 now.bu[from].loss_s = now.bu[from].full - now.bu[from].now_volumn;
                                 now.step = list[head].step + 1; // 必须这么做，因为中间有双重for循环，只有在第一个那里才会更新now
@@ -105,23 +114,27 @@ void bfs() {
 
 int main() {
 
+    bool fail = false;
     while(true) {
         for(int i = 1; i<=3; i++) {
             if(scanf("%d", &list[1].bu[i].full) == EOF) {
+                fail = true;
                 break;
             }
-            if(i == 1) {
-                list[1].bu[i].is_empty = false;
-                list[1].bu[i].is_full = true;
-                list[1].bu[i].now_volumn = list[1].bu[i].full;
-            }
-            else {
-                list[1].bu[i].is_empty = true;
-                list[1].bu[i].is_full = false;
-                list[1].bu[i].now_volumn = 0;
-            }
+            
+            list[1].bu[i].is_empty = true;
+            list[1].bu[i].is_full = false;
+            list[1].bu[i].now_volumn = 0;
             list[1].bu[i].loss_s = list[1].bu[i].full - list[1].bu[i].now_volumn;
         }
+        list[1].bu[1].is_empty = false;
+        list[1].bu[1].is_full = true;
+        list[1].bu[1].now_volumn = list[1].bu[1].full;
+
+        if(fail) {
+            break;
+        }
+
         scanf("%d", &require);
 
         list[1].step = 0;
