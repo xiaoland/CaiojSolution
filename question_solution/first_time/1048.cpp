@@ -14,7 +14,7 @@ record list[1000001], now;  // 还要更长，否则不够用
 bool find = false, v[111000];
 int head, tail, require;
 
-int hash(record p) {
+int hash(record p) {  // 全新加密方式！
     return p.bu[1].now_volumn*1000 + p.bu[2].now_volumn*100 + p.bu[3].now_volumn;
 }
 
@@ -142,10 +142,10 @@ int main() {
     
         if(find) {
             printf("yes\n");
-            printf("%d", list[tail].step);
+            printf("%d\n", list[tail].step);
         }
         else {
-            printf("no");
+            printf("no\n"); // 都要\n
         }
     }
 }
