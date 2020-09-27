@@ -48,7 +48,11 @@ num multiply(num x, num y) {
 	
 	c.len = i;
 	
-	
+	printf("MULITIPLY: RESULT:");
+	for(int j = 1; j<=c.len; i++) {
+	    printf("%d", c.a[i]);
+	}
+	printf("\n");
 	
 	return c;
 }
