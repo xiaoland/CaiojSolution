@@ -14,46 +14,82 @@ struct num {
 num a, b;
 char as[1100], bs[1100];
 
+// num multiply(num x, num y) {
+// 	num c;
+// 	c.len = x.len+y.len-1;
+// 	printf("%d\n", c.len);
+	
+// 	printf("MULITIPLY: RAW: ");
+// 	for(int j = 1; j<=y.len; j++) {
+// 	    printf("%d", y.a[j]);
+// 	}
+// 	printf("\n");
+
+// 	printf("MULITPLY: FIRST STEP: ");
+// 	for(int i = 1; i<=x.len; i++) {  // 乘法可是每个数都要乘的哦 
+// 		for(int j = 1; j<=y.len; j++) {
+// 			c.a[i+j-1]+=x.a[i] * y.a[j];
+// 		}
+// 		printf("%d ", c.a[i]);
+// 	}
+// 	printf("\n");
+	
+// 	printf("MULITPLY: SECOND STEP: ");
+// 	for(int i = 1; i<=c.len; i++) {
+// 		c.a[i+1] = c.a[i]/10;
+// 		c.a[i]%=10;
+// 		printf("%d ", c.a[i]);
+// 	}
+	
+// 	int i = c.len;
+// 	while(c.a[i+1] > 0) {
+// 		i++;
+// 		c.a[i+1] = c.a[i]/10;
+// 		c.a[i]%=10;
+// 		printf("%d", c.a[i]);
+// 	}
+// 	printf("\n");
+
+// 	while(c.a[i] == 0 && i > 1) {
+// 		i--;
+// 	}
+	
+// 	c.len = i;
+
+// 	printf("MULITIPLY: RESULT: ");
+// 	for(int j = 1; j<=c.len; j++) {
+// 	    printf("%d", c.a[j]);
+// 	}
+// 	printf("\n");
+	
+// 	return c;
+// }
+
 num multiply(num x, num y) {
 	num c;
 	c.len = x.len+y.len-1;
-	
-	printf("MULITPLY: FIRST STEP: ");
-	for(int i = 1; i<=x.len; i++) {  // 乘法可是每个数都要乘的哦 
+	for(int i = 1; i<=x.len; i++) {
 		for(int j = 1; j<=y.len; j++) {
-			c.a[i+j-1]+=x.a[i] * y.a[j];
+			c.a[i+j-1]+=x.a[i]*y.a[j];
 		}
-		printf("%d", c.a[i]);
 	}
-	printf("\n");
-	
-	printf("MULITPLY: SECOND STEP: ");
+
 	for(int i = 1; i<=c.len; i++) {
-		c.a[i+1] = c.a[i]/10;
+		c.a[i+1] += c.a[i]/10;
 		c.a[i]%=10;
-		printf("%d", c.a[i]);
 	}
-	
+
 	int i = c.len;
-	while(c.a[i+1] > 0) {
+	while(c.a[i+1]>0) {
 		i++;
 		c.a[i+1] = c.a[i]/10;
 		c.a[i]%=10;
-		printf("%d", c.a[i]);
 	}
-	
-	while(c.a[i] == 0 && i > 1) {
+	while((c.a[i] == 0) && (i>1)) {
 		i--;
 	}
-	
+
 	c.len = i;
-	
-	printf("MULITIPLY: RESULT:");
-	for(int j = 1; j<=c.len; i++) {
-	    printf("%d", c.a[i]);
-	}
-	printf("\n");
-	
 	return c;
 }
 
@@ -69,10 +105,10 @@ int main() {
 		b.a[b.len-i+1] = bs[i] - '0';
 	}
 	
-	num c = multiply(a, b);
+	num d = multiply(a, b);
 	
-	for(int i = c.len; i>=1; i--) {
-		printf("%d", c.a[i]);
+	for(int i = d.len; i>=1; i--) {
+		printf("%d", d.a[i]);
 	}
 	printf("\n");
 	return 0;
