@@ -1,5 +1,5 @@
 // author: Lan_zhijiang
-// description: ¸ß¾«¶È³Ë¸ß¾«¶È
+// description: é«˜ç²¾åº¦ä¹˜é«˜ç²¾åº¦
 #include <cstdio> 
 #include <cstring>
 #include <algorithm>
@@ -18,15 +18,20 @@ num multiply(num x, num y) {
 	num c;
 	c.len = x.len+y.len-1;
 	
-	for(int i = 1; i<=x.len; i++) {  // ³Ë·¨¿ÉÊÇÃ¿¸öÊý¶¼Òª³ËµÄÅ¶ 
+	printf("MULITPLY: FIRST STEP: ");
+	for(int i = 1; i<=x.len; i++) {  // ä¹˜æ³•å¯æ˜¯æ¯ä¸ªæ•°éƒ½è¦ä¹˜çš„å“¦ 
 		for(int j = 1; j<=y.len; j++) {
 			c.a[i+j-1]+=x.a[i] * y.a[j];
 		}
+		printf("%d", c.a[i]);
 	}
+	printf("\n");
 	
+	printf("MULITPLY: SECOND STEP: ");
 	for(int i = 1; i<=c.len; i++) {
 		c.a[i+1] = c.a[i]/10;
 		c.a[i]%=10;
+		printf("%d", c.a[i]);
 	}
 	
 	int i = c.len;
@@ -34,6 +39,7 @@ num multiply(num x, num y) {
 		i++;
 		c.a[i+1] = c.a[i]/10;
 		c.a[i]%=10;
+		printf("%d", c.a[i]);
 	}
 	
 	while(c.a[i] == 0 && i > 1) {
@@ -41,6 +47,9 @@ num multiply(num x, num y) {
 	}
 	
 	c.len = i;
+	
+	
+	
 	return c;
 }
 
