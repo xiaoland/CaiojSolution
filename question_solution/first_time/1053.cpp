@@ -75,16 +75,16 @@ num multiply(num x, num y) {
 	}
 
 	for(int i = 1; i<=c.len; i++) {
-		c.a[i+1] += c.a[i]/10;
+		c.a[i+1]+= c.a[i]/10; // 不要把这个弄成=了！复制就好，是+=！
 		c.a[i]%=10;
 	}
 
 	int i = c.len;
-	while(c.a[i+1]>0) {
-		i++;
+	while(c.a[i+1] > 0) {
 		c.a[i+1] = c.a[i]/10;
 		c.a[i]%=10;
 	}
+
 	while((c.a[i] == 0) && (i>1)) {
 		i--;
 	}
