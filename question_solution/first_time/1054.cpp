@@ -43,11 +43,12 @@ num multiply_x(num x, int y) {  // 其实也可以用两个结构体来实现，
 int main() {
     scanf("%d", &n);
     
+    int b;
     a.len = 1;
     a.a[1] = 1;  // 用1乘于接下来的数
-    for(int i = 2; i<=n+1; i++) {  // 从第2位开始写入数组
-        scanf("%d", &a.a[i]);
-        a = multiply_x(a, a.a[i]);
+    for(int i = 1; i<=n; i++) {  // ！！！不能写到数组里...输入太多的时候在进位、缩位的时候会有影响
+        scanf("%d", &b);
+        a = multiply_x(a, b);
     }
 
     for(int i = a.len; i>=1; i--) {
