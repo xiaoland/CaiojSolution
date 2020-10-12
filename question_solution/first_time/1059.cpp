@@ -1,13 +1,13 @@
 // author: Lan_zhijiang
-// description: ¸´ÔÓĞÍ±³°ü1
+// description: å¤æ‚å‹èƒŒåŒ…
 #include <cstdio>
 #include <cstring>
 #include <algorithm>
-
+using namespace std;
 int ml, n;
 int v[61], w[61], q[61][3];
-int a[61][320001];
-int out[32001];
+int a[320001];
+// int out[32001];
 
 void read_in() {
 	int type;
@@ -34,39 +34,45 @@ void read_in() {
 int main() {
 	read_in();
 	
-	memset(out, false, sizeof(out));
-	out[0] = true;
+	memset(a, 0, sizeof(a));
+	a[0] = 0;
+	int x = 0;
 	
 	for(int i = 1; i<=n; i++) {
 		for(int j = ml; j>=v[i]; j--) {
-			if(q[i][0] == 0) {
-				a[i][j] = max(a[i][j-1], a[i][j-1] + v[i]*w[i]);
+			printf("i: %d, j: %d\n", i, j);
+			if(q[i][0] == 0) {  // ä¸»ä»¶
+				printf("    MAIN\n");
+				a[j] = max(a[j-1], a[j-1] + v[i]*w[i]);
 			}
-			else { // ÓĞ¸½¼ş 
-				int sl = p[i][1], sr = p[i][2];
-				if(sr != -1) {  // Ò²ÓĞÓÒ¸½¼ş 
-					if(v[i] + v[sl] + v[sr] <= j) {  // ×óÓÒ¸½¼ş¶¼¿ÉÒÔ¼ÓÉÏ 
-						a[i][j] = max(a[i][j-1], a[i][j-1] + v[i]*w[i]+v[sl]*w[sl]+v[sr]*w[sr]);
+			else { // é™„ä»¶
+				printf("    SON\n");
+				int sl = q[i][1], sr = q[i][2];
+				if(sr != -1) {  // è‹¥æœ‰å³å­©å­ 
+					if(v[i] + v[sl] + v[sr] <= j) {  // è‹¥ä¸¤ä¸ªå­©å­éƒ½å¯ä»¥ 
+						printf("      ADD BOTH\n");
+						a[j] = max(a[j-1], a[j-1] + v[i]*w[i]+v[sl]*w[sl]+v[sr]*w[sr]);
 					}
-					elif (v[i] + v[sr] <= j) { // Ö»ÄÜ¼ÓÉÏÓÒ¸½¼ş 
-						a[i][j] = max(a[i][j-1], a[i][j-1] + v[i]*w[i]+v[sr]*w[sr]);
+					else if (v[i] + v[sl] <= j) {  // åªæœ‰å·¦å­©å­å°±å¯ä»¥
+						printf("      ADD LEFT\n");
+						a[j] = max(a[j-1], a[j-1] + v[i]*w[i]+v[sl]*w[sl]);
+					}
+					else if (v[i] + v[sr] <= j) { // Ö»åªæœ‰å³å­©å­å°±å¯ä»¥
+						printf("      ADD RIGHT\n");
+						a[j] = max(a[j-1], a[j-1] + v[i]*w[i]+v[sr]*w[sr]);
 					}
 				}
-				else {  // Ã»ÓĞÓÒ¸½¼ş
-					if(v[i] + v[sl] <= j) {  // ¿ÉÒÔ¼Ó×ó¸½¼ş 
-						a[i][j] = max(a[i][j-1], a[i][j-1] + v[i]*w[i]+v[sl]*w[sl]);
+				else {  // æ²¡æœ‰å³å­©å­
+					if(v[i] + v[sl] <= j) {  //  å·¦å­©å­å¯ä»¥
+						printf("      ADD LEFT\n"); 
+						a[j] = max(a[j-1], a[j-1] + v[i]*w[i]+v[sl]*w[sl]);
 					}
 				}
 			}
+			x = max(x, a[j]);
 		} 
-		
-		for(int j = 1; j<=ml; j++) {
-			// FINISH IN 9.30
-		}
 	}
 	
-	int x = 0;
-	for(int i = ml; i>=1; i--) {
-		x = max(x, out[i]);
-	}
+	printf("%d\n", x);
+	return 0;
 }
