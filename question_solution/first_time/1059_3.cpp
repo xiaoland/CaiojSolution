@@ -28,10 +28,10 @@ void read_in() {
         if (items[i].type > 0) {
             items[items[i].type].sons[0] = 0;
             if (items[items[i].type].sons[1] == -1) {
-                items[items[i].type].sons[1] = items[i].type;
+                items[items[i].type].sons[1] = i;
             }
             else {
-                items[items[i].type].sons[2] = items[i].type;
+                items[items[i].type].sons[2] = i;
             }
         }
     }
@@ -48,25 +48,26 @@ int main() {
         if (items[i].type == 0) {
             for(int j = ml; j >= items[i].price; j--) {
               // ATTENTION: 这里的j不是-1，而是减去item i的价钱，因为这是在上一个结果的基础上添加的啊 
-                d = f[j-items[i].price] + items[i].weight;
+                f[j] = max(f[j-items[i].price], f[j-items[i].price] + items[i].weight);
                 if (items[i].sons[0] == 0) {
                     int lf = items[i].sons[1], ri = items[i].sons[2];
                     if (lf != -1 && items[i].price + items[lf].price <= j) {
-                        a = f[j-items[i].price-items[lf].price] + items[i].weight + items[lf].weight;
+                        f[j] = max(f[j], f[j-items[i].price-items[lf].price] + items[i].weight + items[lf].weight);
                     }
                     if (ri != -1 && items[i].price + items[ri].price <= j) {
-                        b = f[j-items[i].price-items[ri].price] + items[i].weight + items[ri].weight;
+                        f[j] = max(f[j], f[j-items[i].price-items[ri].price] + items[i].weight + items[ri].weight);
                     }
                     if (ri != -1 && lf != -1 && 
                         items[i].price + items[lf].price + items[ri].price <= j) {
-                        c = f[j-items[i].price-items[lf].price-items[ri].price] + items[i].weight + items[lf].weight + items[ri].weight;
+                        f[j] = max(f[j], f[j-items[i].price-items[lf].price-items[ri].price] + items[i].weight + items[lf].weight + items[ri].weight);
                     }
                 }
-                f[j] = max(d, max(a, max(b, c)));
+                
+                ans = max(ans, f[j]);
             }
         }
     }
      
-    printf("%d\n", f[ml]*10);
+    printf("%d\n", ans*10);
     return 0;
 }
