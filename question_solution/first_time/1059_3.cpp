@@ -1,6 +1,5 @@
 // author: Lan_zhijiang
 // description: thrid version of proplem 1059
-// SUCCESSFUL VERSION!
  
 #include <cstdio>
 #include <cstring>
