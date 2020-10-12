@@ -1,0 +1,73 @@
+// author: Lan_zhijiang
+// description: thrid version of proplem 1059
+// SUCCESSFUL VERSION!
+ 
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+int ml, sn, ans;
+struct item {
+    int type, price, weight, sons[3];
+    item() {
+        type = -1;
+        price = 0;
+        weight = 0;
+        memset(sons, -1, sizeof(sons));
+    }
+};
+item items[60];
+int f[32000];
+ 
+ 
+void read_in() {
+    scanf("%d%d", &ml, &sn);
+    for (int i = 1; i<=sn; i++) {
+        scanf("%d%d%d", &items[i].price, &items[i].weight, &items[i].type);
+        items[i].price/=10;
+        items[i].weight*=items[i].price;
+        if (items[i].type > 0) {
+            items[items[i].type].sons[0] = 0;
+            if (items[items[i].type].sons[1] == -1) {
+                items[items[i].type].sons[1] = items[i].type;
+            }
+            else {
+                items[items[i].type].sons[2] = items[i].type;
+            }
+        }
+    }
+    ml/=10;
+}
+ 
+int main() {
+    read_in();
+     
+    ans = 0;
+    memset(f, 0, sizeof(f));
+     
+    for (int i = 1; i<=sn; i++) {
+        for(int j = ml; j >= items[i].price; j--) {
+            if (items[i].type == 0) {  // ATTENTION: 这里的j不是-1，而是减去item i的价钱，因为这是在上一个结果的基础上添加的啊 
+                f[j] = max(f[j-items[i].price], f[j-items[i].price] + items[i].weight);
+                if (items[i].sons[0] == 0) {
+                    int lf = items[i].sons[1], ri = items[i].sons[2];
+                    if (lf != -1 && items[i].price + items[lf].price <= j) {
+                        f[j] = max(f[j], f[j-items[i].price] + items[i].weight + items[lf].weight);
+                    }
+                    if (ri != -1 && items[i].price + items[ri].price <= j) {
+                        f[j] = max(f[j], f[j-items[i].price] + items[i].weight + items[ri].weight);
+                    }
+                    if (ri != -1 && lf != -1 && 
+                        items[i].price + items[lf].price + items[ri].price <= j) {
+                        f[j] = max(f[j], f[j-items[i].price] + items[i].weight + items[lf].weight + items[ri].weight);
+                    }
+                }
+            }
+             
+            ans = max(ans, f[j]);
+        }
+    }
+     
+    printf("%d\n", ans*10);
+    return 0;
+}
