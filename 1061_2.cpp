@@ -35,11 +35,11 @@ int main() {
         for(int i = 1; i<=l; i++) {
             for(int j = 0; j<=5; j++) {
                 if (s[i] != encoder[j][len[j]-1]) {
-                    break;
+                    // 不用退出，继续下一个encode来判断
                 }
                 else {
                     if (i < len[j]) {
-                        break;
+                        // 这里也一样不用（只是为了这种情况不操作存在的啦）
                     }
                     else {
                         if (compare(i, j)) {
