@@ -41,7 +41,7 @@ int main() {
                 if (s[i] == encoder[k][strlen(encoder[k])-1]) {
                     if (i < strlen(encoder[k])) {
                         // printf("MAIN: break because i<encoder[k]\n");
-                        break;
+                        // 不用退出
                     }
                     else {
                         if (compare(i, k)) {
@@ -53,6 +53,7 @@ int main() {
                 }
                 else {
                     // printf("MAIN: %c and %c\n", s[i], encoder[k][strlen(encoder[k])-1]);
+                    // 不用退出
                 }
             }
         }
