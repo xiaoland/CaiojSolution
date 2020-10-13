@@ -8,7 +8,7 @@
 int t;
 char encoder[6][10] = {"one", "puton", "out", "output", "in", "input"};  // C艹真麻烦...这样都要二维数组
 char s[1000001];
-bool f[1000001], quit;
+bool f[1000001];
 
 bool compare(int a, int b) {
     
@@ -38,9 +38,7 @@ int main() {
         for (int i = 1; i<len+1; i++) {
 
             for (int k = 0; k<=5; k++) {
-                quit = true;
                 if (s[i] == encoder[k][strlen(encoder[k])-1]) {
-                    quit = false;
                     if (i < strlen(encoder[k])) {
                         // printf("MAIN: break because i<encoder[k]\n");
                         break;
