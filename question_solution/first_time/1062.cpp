@@ -20,6 +20,7 @@ bool compare(int a, int b) {
         l--;
         a--;
     }
+    return true;
 }
  
 int main() {
@@ -32,10 +33,12 @@ int main() {
     memset(f, false, sizeof(f));
     memset(d, 0x3f, sizeof(d));
     f[0] = true;
+    d[0] = 0;
      
     int l = strlen(s+1);
     // printf("%d\n", l);
-     
+    
+    int count = 0;
     for (int i = 1; i<l; i++) {
         for (int j = 1; j<=n; j++) {
             if (s[i] != encoder[j][strlen(encoder[j]+1)-1]) {
@@ -43,19 +46,20 @@ int main() {
             }
             else {
                 if (i+1 < strlen(encoder[j]+1)) {
-                    printf("check point 2\n");
+                    // printf("check point 2\n");
                 }
                 else {
                     if (compare(i, j)) {
-                        printf("check point 3, i: %d, j: %d\n", i, j);
+                        // printf("check point 3, i: %d, j: %d\n", i, j);
                         int c = i-strlen(encoder[j]+1);
                         if (c < 0) {
                             c+=1;
                         }
                         if (f[c]) {  // strlen char数组千万不要漏了+1 
-                            printf("check point 4\n");
+                            // printf("check point 4\n");
                             f[i] = true;
-                            d[i] = min(d[i], d[c] + 1);
+                            count++;
+                            d[i] = min(d[i], d[c] + 1);  // 很多时候都是数组问题，多演练一下
                         }
                     }
                 }
