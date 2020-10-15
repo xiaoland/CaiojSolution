@@ -38,7 +38,6 @@ int main() {
     int l = strlen(s+1);
     // printf("%d\n", l);
     
-    int count = 0;
     for (int i = 1; i<l; i++) {
         for (int j = 1; j<=n; j++) {
             if (s[i] != encoder[j][strlen(encoder[j]+1)-1]) {
@@ -51,14 +50,13 @@ int main() {
                 else {
                     if (compare(i, j)) {
                         // printf("check point 3, i: %d, j: %d\n", i, j);
-                        int c = i-strlen(encoder[j]+1);
+                        int c = i-strlen(encoder[j]+1); // strlen char数组千万不要漏了+1
                         if (c < 0) {
                             c+=1;
                         }
-                        if (f[c]) {  // strlen char数组千万不要漏了+1 
+                        if (f[c]) {  // 其实这个没必要的呢
                             // printf("check point 4\n");
                             f[i] = true;
-                            count++;
                             d[i] = min(d[i], d[c] + 1);  // 很多时候都是数组问题，多演练一下
                         }
                     }
