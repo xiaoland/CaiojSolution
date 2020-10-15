@@ -14,9 +14,8 @@ int len[101];
  
 bool compare(int a, int b) {
     int l = len[b] - 1;
-    // printf("COMPARE: %d\n", l);
     while (l > 0) {
-        if (input[a] != encoder[b][l]) {
+        if (input[a-1] != encoder[b][l]) {
             return false;
         }
         l--;
@@ -34,29 +33,21 @@ int main() {
     }
      
     int l = strlen(input+1);
-    memset(f, 0x3f, sizeof(f));
+    memset(f, 63, sizeof(f));
     f[0] = 0;
      
-    for (int i = 1; i <= l; i++) {
+    for (int i = 0; i <= l+1; i++) {
         for (int j = 1; j<=n; j++) {
-            // if (input[i] != encoder[j][len[j]-1]) {
-            // 
-            // }
-            // else {
                 int c = i - len[j];
-                if (c < 0) {
-                    c++;
-                }
                 if (f[c] <= 100 && i+1 >= len[j]) {
                     
                     if (compare(i, j)) {
                         f[i] = min(f[i], f[c] + 1);
                     }
                 }
-            // }
         }
     }
      
-    printf("%d\n", f[l-1]);
+    printf("%d\n", f[l]);
     return 0;
 }
