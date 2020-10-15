@@ -1,5 +1,6 @@
 // author: Lan_zhijiang
-// description: the solution of problem 1062
+// description: the solution of problem 1062  SKIP SKIP SKIP!!!
+// can only finished 80%
  
 #include <cstdio>
 #include <cstring>
@@ -37,7 +38,7 @@ int main() {
      
     int l = strlen(s+1);
     // printf("%d\n", l);
-    
+
     for (int i = 1; i<l; i++) {
         for (int j = 1; j<=n; j++) {
             if (s[i] != encoder[j][strlen(encoder[j]+1)-1]) {

@@ -1,5 +1,6 @@
 // author： Lan_zhijiang
-// description: the second version solution of problem 1062 
+// description: the second version solution of problem 1062 SKIP SKIP SKIP!!!
+// can only finished 80%
  
 #include <cstdio>
 #include <cstring>
@@ -36,7 +37,7 @@ int main() {
     memset(f, 63, sizeof(f));
     f[0] = 0;
      
-    for (int i = 0; i <= l+1; i++) {
+    for (int i = 0; i <= l; i++) {
         for (int j = 1; j<=n; j++) {
                 int c = i - len[j];
                 if (f[c] <= 100 && i+1 >= len[j]) {
