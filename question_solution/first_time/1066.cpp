@@ -19,7 +19,7 @@ void read_in() {
     scanf("%lf%lf%d", &bw, &length, &n);
     for (int i = 1; i<=n; i++) {
         scanf("%lf%lf", &wa[i], &sa[i]);
-        sa[i]/=60.0000;
+        sa[i]/=60.0;
         wa[i]+=wa[i-1];
     }
 }
